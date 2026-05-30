@@ -63,25 +63,52 @@ function UserDashboard() {
   return (
     <main className="app-shell workspace-shell">
       <PageCard className="dashboard-card library-workspace">
-        <aside className="dashboard-sidebar">
-          <div className="sidebar-mark" aria-hidden="true">
-            📚
+        <aside className="dashboard-sidebar app-sidebar">
+          <div className="sidebar-brand">
+            <span className="sidebar-logo" aria-hidden="true">▰</span>
+            <strong>Library<br />Management<br />System</strong>
           </div>
-          <p className="eyebrow">Student Portal</p>
-          <h2>Reading Desk</h2>
-          <p>Warm shelves for searching, borrowing notes, and reminders.</p>
-          <div className="sidebar-decor" aria-hidden="true">
-            <span>💡</span>
-            <span>🪴</span>
-          </div>
+          <nav className="side-menu" aria-label="Student navigation preview">
+            <button className="side-menu__item active" type="button">Dashboard</button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/student/search-books')}>
+              Search Books
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/student/my-borrowed-books')}>
+              My Borrowings
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/student/borrow-history')}>
+              Borrow History
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/student/due-reminders')}>
+              Due Reminders
+            </button>
+            <button className="side-menu__item" type="button" onClick={handleLogout}>Logout</button>
+          </nav>
         </aside>
 
         <div className="card-content dashboard-main">
-          <p className="eyebrow">Library Workspace</p>
-          <h1>
-            Welcome, {currentUser.name} ({currentUser.role_level})
-          </h1>
-          <p className="page-intro">Choose a library task from your reading desk.</p>
+          <header className="dashboard-topbar">
+            <div>
+              <p className="eyebrow">Student Portal</p>
+              <strong>Library Workspace</strong>
+            </div>
+            <button type="button" onClick={handleLogout}>Logout</button>
+          </header>
+
+          <section className="welcome-banner professional-banner">
+            <div>
+              <h1>
+                Welcome back, {currentUser.name}
+              </h1>
+              <p className="page-intro">Keep reading, keep growing. Role: {currentUser.role_level}</p>
+            </div>
+            <div className="banner-summary">
+              <span>Student No.</span>
+              <strong>{currentUser.student_no}</strong>
+              <span>Access Level</span>
+              <strong>{currentUser.role_level}</strong>
+            </div>
+          </section>
 
           {isLoadingStats ? (
             <p className="loading-text">Loading...</p>
@@ -106,17 +133,33 @@ function UserDashboard() {
             </div>
           )}
 
-          {/* 后续功能页面会从这些入口继续扩展 */}
-          <div className="dashboard-actions">
-            <AppButton onClick={() => navigate('/student/search-books')}>Search Books</AppButton>
-            <AppButton onClick={() => navigate('/student/my-borrowed-books')}>
-              My Borrowed Books
-            </AppButton>
-            <AppButton onClick={() => navigate('/student/borrow-history')}>Borrow History</AppButton>
-            <AppButton onClick={() => navigate('/student/due-reminders')}>Due Reminders</AppButton>
-            <AppButton variant="secondary" onClick={handleLogout}>
-              Logout
-            </AppButton>
+          <div className="dashboard-panels professional-panels">
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Due Reminders</h2>
+                <button type="button" onClick={() => navigate('/student/due-reminders')}>View all</button>
+              </div>
+              <p className="panel-main-number">{stats.dueSoon}</p>
+              <p className="panel-copy">book(s) need attention soon.</p>
+            </section>
+
+            {/* 快速入口仍沿用原本功能。 */}
+            <section className="info-panel quick-actions-panel">
+              <div className="panel-title-row">
+                <h2>Primary Actions</h2>
+              </div>
+              <div className="dashboard-actions quick-action-grid">
+                <AppButton onClick={() => navigate('/student/search-books')}>Search Books</AppButton>
+                <AppButton onClick={() => navigate('/student/my-borrowed-books')}>
+                  My Borrowings
+                </AppButton>
+                <AppButton onClick={() => navigate('/student/borrow-history')}>Borrow History</AppButton>
+                <AppButton onClick={() => navigate('/student/due-reminders')}>Due Reminders</AppButton>
+                <AppButton variant="secondary" onClick={handleLogout}>
+                  Logout
+                </AppButton>
+              </div>
+            </section>
           </div>
         </div>
       </PageCard>

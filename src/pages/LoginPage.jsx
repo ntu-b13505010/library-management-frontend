@@ -44,87 +44,129 @@ function LoginPage() {
   };
 
   return (
-    <main className="app-shell cozy-corner">
-      <PageCard className="auth-card auth-card--login">
-        {/* 温暖阅读角落的装饰元素 */}
-        <aside className="auth-scene" aria-hidden="true">
-          <div className="lamp-shade">💡</div>
-          <div className="shelf-line" />
-          <div className="scene-icons">
-            <span>📚</span>
-            <span>🪴</span>
-            <span>📝</span>
-          </div>
-          <p className="scene-caption">Quiet shelves, warm light, simple access.</p>
-        </aside>
-
-        <div className="card-content auth-panel">
-          <p className="eyebrow">Warm Library Prototype</p>
-          <h1>Library Management System</h1>
-          <p className="page-intro">A quiet reading corner for students and librarians.</p>
-
-          <div className="role-toggle" aria-label="Login role">
-            <button
-              className={loginRole === 'student' ? 'role-toggle__item active' : 'role-toggle__item'}
-              type="button"
-              onClick={() => handleRoleChange('student')}
-            >
-              Student
-            </button>
-            <button
-              className={loginRole === 'admin' ? 'role-toggle__item active' : 'role-toggle__item'}
-              type="button"
-              onClick={() => handleRoleChange('admin')}
-            >
-              Admin
-            </button>
-          </div>
-
-          <form className="form-stack" onSubmit={handleLogin}>
-            <label>
-              Account
-              <input
-                type="text"
-                name="account"
-                placeholder="Enter account"
-                value={account}
-                onChange={(event) => setAccount(event.target.value)}
-              />
-            </label>
-            <label>
-              Password
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </label>
-
-            {message && <p className="form-message form-message--error">{message}</p>}
-
-            <div
-              className={loginRole === 'student' ? 'button-row' : 'button-row button-row--single'}
-            >
-              <AppButton type="submit">Login</AppButton>
-              {loginRole === 'student' && (
-                // 只有学生登录时显示注册入口。
-                <AppButton variant="secondary" onClick={() => navigate('/register')}>
-                  Register
-                </AppButton>
-              )}
+    <main className="portal-shell">
+      <section className="portal-frame">
+        <header className="portal-header">
+          <div className="portal-brand">
+            <span className="brand-icon" aria-hidden="true" />
+            <div>
+              <strong>University Library Portal</strong>
+              <span>Library Management System</span>
             </div>
-          </form>
-
-          <div className="test-hints">
-            <p className="test-hints__title">Test accounts</p>
-            <p>Student: S1001 / 123456, S1002 / 123456</p>
-            <p>Suspended student: S1003 / 123456</p>
-            <p>Admin: admin / admin123, librarian / library123</p>
           </div>
+          <p>Frontend mock demo · Service-ready architecture</p>
+        </header>
+
+        <div className="portal-layout portal-layout--professional">
+          <section className="portal-hero portal-hero--system">
+            <div className="portal-hero-content">
+              <p className="eyebrow">University Library Access</p>
+              <h1>Library Management System</h1>
+              <p>
+                Frontend mock portal for catalog access, circulation records, due reminders,
+                and librarian administration workflows.
+              </p>
+            </div>
+
+            <div className="system-status-panel">
+              <div className="status-row">
+                <span>Environment</span>
+                <strong>Frontend Mock Demo</strong>
+              </div>
+              <div className="status-row">
+                <span>Access Roles</span>
+                <strong>Student · Administrator</strong>
+              </div>
+              <div className="status-row">
+                <span>Integration</span>
+                <strong>Service layer ready</strong>
+              </div>
+            </div>
+
+            <div className="module-list">
+              <p>Available modules</p>
+              <ul>
+                <li>Student catalog search and borrowing workflow</li>
+                <li>Borrow history and due reminder tracking</li>
+                <li>Administrative user, book, and record management</li>
+              </ul>
+            </div>
+          </section>
+
+          <PageCard className="portal-login-card">
+            <div className="card-content auth-panel">
+              <p className="eyebrow">Secure Mock Login</p>
+              <h2>Sign in to continue</h2>
+
+              <div className="role-toggle" aria-label="Login role">
+                <button
+                  className={
+                    loginRole === 'student' ? 'role-toggle__item active' : 'role-toggle__item'
+                  }
+                  type="button"
+                  onClick={() => handleRoleChange('student')}
+                >
+                  Student
+                </button>
+                <button
+                  className={loginRole === 'admin' ? 'role-toggle__item active' : 'role-toggle__item'}
+                  type="button"
+                  onClick={() => handleRoleChange('admin')}
+                >
+                  Admin
+                </button>
+              </div>
+
+              <form className="form-stack" onSubmit={handleLogin}>
+                <label>
+                  Account
+                  <input
+                    type="text"
+                    name="account"
+                    placeholder="Enter account"
+                    value={account}
+                    onChange={(event) => setAccount(event.target.value)}
+                  />
+                </label>
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                </label>
+
+                {message && <p className="form-message form-message--error">{message}</p>}
+
+                <div
+                  className={
+                    loginRole === 'student' ? 'button-row' : 'button-row button-row--single'
+                  }
+                >
+                  <AppButton type="submit">Login</AppButton>
+                  {loginRole === 'student' && (
+                    // 只有學生登入時顯示註冊入口。
+                    <AppButton variant="secondary" onClick={() => navigate('/register')}>
+                      Register
+                    </AppButton>
+                  )}
+                </div>
+              </form>
+
+              <div className="test-hints">
+                <p className="test-hints__title">Test accounts</p>
+                <p>Student: S1001 / 123456, S1002 / 123456</p>
+                <p>Suspended student: S1003 / 123456</p>
+                <p>Admin: admin / admin123, librarian / library123</p>
+              </div>
+              <p className="ui-version">UI version: warm-library-v2</p>
+            </div>
+          </PageCard>
         </div>
-      </PageCard>
+      </section>
     </main>
   );
 }

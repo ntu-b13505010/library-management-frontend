@@ -66,23 +66,47 @@ function AdminDashboard() {
   return (
     <main className="app-shell workspace-shell">
       <PageCard className="dashboard-card library-workspace">
-        <aside className="dashboard-sidebar admin-sidebar">
-          <div className="sidebar-mark" aria-hidden="true">
-            📝
+        <aside className="dashboard-sidebar app-sidebar admin-sidebar">
+          <div className="sidebar-brand">
+            <span className="sidebar-logo" aria-hidden="true">▰</span>
+            <strong>Library<br />Management<br />System</strong>
           </div>
-          <p className="eyebrow">Admin Portal</p>
-          <h2>Library Office</h2>
-          <p>Simple placeholders for records, readers, and book management.</p>
-          <div className="sidebar-decor" aria-hidden="true">
-            <span>📚</span>
-            <span>💡</span>
-          </div>
+          <nav className="side-menu" aria-label="Admin navigation preview">
+            <button className="side-menu__item active" type="button">Dashboard</button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/admin/borrow-records')}>
+              Borrow Records
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/admin/manage-users')}>
+              Manage Users
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/admin/manage-books')}>
+              Manage Books
+            </button>
+            <button className="side-menu__item" type="button" onClick={handleLogout}>Logout</button>
+          </nav>
         </aside>
 
         <div className="card-content dashboard-main">
-          <p className="eyebrow">Library Workspace</p>
-          <h1>Welcome, {currentAdmin.username}</h1>
-          <p className="page-intro">A calm workspace for managing library records.</p>
+          <header className="dashboard-topbar admin-topbar">
+            <div>
+              <p className="eyebrow">Admin Portal</p>
+              <strong>Librarian Control Center</strong>
+            </div>
+            <button type="button" onClick={handleLogout}>Logout</button>
+          </header>
+
+          <section className="welcome-banner admin-banner professional-banner">
+            <div>
+              <h1>Welcome, {currentAdmin.username}</h1>
+              <p className="page-intro">A calm workspace for records, readers, and books.</p>
+            </div>
+            <div className="banner-summary admin-summary">
+              <span>Mode</span>
+              <strong>Administration</strong>
+              <span>Session</span>
+              <strong>Mock API</strong>
+            </div>
+          </section>
 
           {isLoadingStats ? (
             <p className="loading-text">Loading...</p>
@@ -111,17 +135,22 @@ function AdminDashboard() {
             </div>
           )}
 
-          {/* 管理员功能入口，暂时只显示占位按钮 */}
-          <div className="dashboard-actions admin-actions">
-            <AppButton onClick={() => navigate('/admin/borrow-records')}>
-              View All Borrow Records
-            </AppButton>
-            <AppButton onClick={() => navigate('/admin/manage-users')}>Manage Users</AppButton>
-            <AppButton onClick={() => navigate('/admin/manage-books')}>Manage Books</AppButton>
-            <AppButton variant="secondary" onClick={handleLogout}>
-              Logout
-            </AppButton>
-          </div>
+          <section className="info-panel quick-actions-panel">
+            <div className="panel-title-row">
+              <h2>Control Desk</h2>
+            </div>
+            {/* 管理員功能入口，仍沿用既有路由。 */}
+            <div className="dashboard-actions admin-actions quick-action-grid">
+              <AppButton onClick={() => navigate('/admin/borrow-records')}>
+                View Borrow Records
+              </AppButton>
+              <AppButton onClick={() => navigate('/admin/manage-users')}>Manage Users</AppButton>
+              <AppButton onClick={() => navigate('/admin/manage-books')}>Manage Books</AppButton>
+              <AppButton variant="secondary" onClick={handleLogout}>
+                Logout
+              </AppButton>
+            </div>
+          </section>
         </div>
       </PageCard>
     </main>
