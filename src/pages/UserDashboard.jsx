@@ -82,7 +82,7 @@ function UserDashboard() {
       <PageCard className="dashboard-card library-workspace">
         <aside className="dashboard-sidebar app-sidebar">
           <div className="sidebar-brand">
-            <span className="sidebar-logo" aria-hidden="true">▰</span>
+            <span className="sidebar-logo" aria-hidden="true" />
             <strong>Library<br />Management<br />System</strong>
           </div>
           <nav className="side-menu" aria-label="Student navigation preview">

@@ -1666,6 +1666,25 @@ select {
   background: linear-gradient(180deg, #795337, #654027);
 }
 
+/* Logo cleanup: hide any fallback glyph so only the outline book remains visible. */
+.brand-icon,
+.sidebar-logo,
+.admin-sidebar .sidebar-logo {
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+}
+
+.brand-icon::before,
+.brand-icon::after,
+.sidebar-logo::before,
+.sidebar-logo::after,
+.admin-sidebar .sidebar-logo::before,
+.admin-sidebar .sidebar-logo::after {
+  background: transparent;
+  border-color: #5c3721;
+}
+
 /* Sidebar contrast fix: admin and student navigation use readable coffee text on warm beige. */
 .app-sidebar,
 .admin-sidebar {

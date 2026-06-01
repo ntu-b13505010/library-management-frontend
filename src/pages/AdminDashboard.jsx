@@ -93,7 +93,7 @@ function AdminDashboard() {
       <PageCard className="dashboard-card library-workspace">
         <aside className="dashboard-sidebar app-sidebar admin-sidebar">
           <div className="sidebar-brand">
-            <span className="sidebar-logo" aria-hidden="true">▰</span>
+            <span className="sidebar-logo" aria-hidden="true" />
             <strong>Library<br />Management<br />System</strong>
           </div>
           <nav className="side-menu" aria-label="Admin navigation preview">
