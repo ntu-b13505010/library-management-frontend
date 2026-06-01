@@ -1,5 +1,6 @@
 import { mockBooks } from '../mock/mockBooks.js';
 import { mockBorrowRecords } from '../mock/mockBorrowRecords.js';
+import { mockReservations } from '../mock/mockReservations.js';
 import { mockUsers } from '../mock/mockUsers.js';
 
 const ok = (message, data = null) => Promise.resolve({ success: true, message, data });
@@ -92,10 +93,66 @@ export function removeBook(bookId) {
     return fail('Book does not exist.', null);
   }
 
-  if (book.status === 'BORROWED') {
-    return fail('Borrowed books cannot be removed.', null);
+  if (['BORROWED', 'RESERVED'].includes(book.status)) {
+    return fail('Borrowed or reserved books cannot be removed.', null);
   }
 
   book.status = 'REMOVED';
   return ok('Book removed successfully.', { ...book });
+}
+
+export function getLibraryStatistics() {
+  const availableBooks = mockBooks.filter((book) => book.status === 'AVAILABLE').length;
+  const borrowedBooks = mockBooks.filter((book) => book.status === 'BORROWED').length;
+  const reservedBooks = mockBooks.filter((book) => book.status === 'RESERVED').length;
+  const activeUsers = mockUsers.filter((user) => user.status === 'ACTIVE').length;
+  const suspendedUsers = mockUsers.filter((user) => user.status === 'SUSPENDED').length;
+
+  const popularBooks = mockBooks
+    .map((book) => ({
+      book_id: book.book_id,
+      title: book.title,
+      borrow_count: mockBorrowRecords.filter((record) => record.book_id === book.book_id).length,
+      reservation_count: mockReservations.filter(
+        (reservation) => reservation.book_id === book.book_id,
+      ).length,
+    }))
+    .map((book) => ({
+      ...book,
+      popularity_score: book.borrow_count + book.reservation_count,
+    }))
+    .filter((book) => book.popularity_score > 0)
+    .sort((first, second) => second.popularity_score - first.popularity_score);
+
+  const subjectMap = mockBooks.reduce((summary, book) => {
+    String(book.subjects || '')
+      .split(',')
+      .map((subject) => subject.trim())
+      .filter(Boolean)
+      .forEach((subject) => {
+        const current = summary.get(subject) || { subject, book_count: 0, borrow_count: 0 };
+        current.book_count += 1;
+        current.borrow_count += mockBorrowRecords.filter(
+          (record) => record.book_id === book.book_id,
+        ).length;
+        summary.set(subject, current);
+      });
+
+    return summary;
+  }, new Map());
+
+  return ok('Library statistics loaded successfully.', {
+    totalBooks: mockBooks.length,
+    availableBooks,
+    borrowedBooks,
+    reservedBooks,
+    activeUsers,
+    suspendedUsers,
+    totalBorrowRecords: mockBorrowRecords.length,
+    totalReservations: mockReservations.length,
+    popularBooks,
+    popularSubjects: Array.from(subjectMap.values()).sort(
+      (first, second) => second.borrow_count - first.borrow_count || second.book_count - first.book_count,
+    ),
+  });
 }

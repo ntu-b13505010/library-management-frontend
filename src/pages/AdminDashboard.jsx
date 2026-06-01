@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import {
   getAdminBooks,
   getAdminBorrowRecords,
+  getAdminStatistics,
   getAdminUsers,
 } from '../services/adminService.js';
+import { getAdminReservations } from '../services/reservationService.js';
 import PageCard from '../components/PageCard.jsx';
 
 function AdminDashboard() {
@@ -16,11 +18,15 @@ function AdminDashboard() {
     activeUsers: 0,
     suspendedUsers: 0,
     totalBorrowRecords: 0,
+    reservedBooks: 0,
+    totalReservations: 0,
   });
   const [dashboardPreview, setDashboardPreview] = useState({
     recentRecords: [],
     users: [],
     books: [],
+    reservations: [],
+    popularBooks: [],
   });
   const [isLoadingStats, setIsLoadingStats] = useState(false);
 
@@ -37,10 +43,12 @@ function AdminDashboard() {
 
     const loadDashboardStats = async () => {
       setIsLoadingStats(true);
-      const [booksResult, usersResult, recordsResult] = await Promise.all([
+      const [booksResult, usersResult, recordsResult, reservationsResult, statisticsResult] = await Promise.all([
         getAdminBooks(),
         getAdminUsers(),
         getAdminBorrowRecords(),
+        getAdminReservations(),
+        getAdminStatistics(),
       ]);
 
       const books = booksResult.data;
@@ -53,11 +61,15 @@ function AdminDashboard() {
         activeUsers: users.filter((user) => user.status === 'ACTIVE').length,
         suspendedUsers: users.filter((user) => user.status === 'SUSPENDED').length,
         totalBorrowRecords: recordsResult.data.length,
+        reservedBooks: books.filter((book) => book.status === 'RESERVED').length,
+        totalReservations: reservationsResult.data.length,
       });
       setDashboardPreview({
         recentRecords: records.slice(-4).reverse(),
         users,
         books,
+        reservations: reservationsResult.data.slice(-4).reverse(),
+        popularBooks: statisticsResult.data.popularBooks.slice(0, 3),
       });
       setIsLoadingStats(false);
     };
@@ -94,6 +106,12 @@ function AdminDashboard() {
             </button>
             <button className="side-menu__item" type="button" onClick={() => navigate('/admin/manage-books')}>
               Manage Books
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/admin/reservations')}>
+              Reservations
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/admin/statistics')}>
+              Statistics
             </button>
             <button className="side-menu__item" type="button" onClick={handleLogout}>Logout</button>
           </nav>
@@ -143,6 +161,10 @@ function AdminDashboard() {
               <div className="stat-card">
                 <span className="stat-value">{stats.totalBorrowRecords}</span>
                 <span className="stat-label">Total Borrow Records</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-value">{stats.totalReservations}</span>
+                <span className="stat-label">Reservations</span>
               </div>
             </div>
           )}
@@ -207,12 +229,58 @@ function AdminDashboard() {
                   <strong>{stats.borrowedBooks}</strong>
                 </div>
                 <div className="summary-row">
+                  <span>Reserved Books</span>
+                  <strong>{stats.reservedBooks}</strong>
+                </div>
+                <div className="summary-row">
                   <span>Removed Books</span>
                   <strong>
                     {dashboardPreview.books.filter((book) => book.status === 'REMOVED').length}
                   </strong>
                 </div>
               </div>
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Reservation Overview</h2>
+              </div>
+              {dashboardPreview.reservations.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.reservations.map((reservation) => (
+                    <div className="preview-item" key={reservation.reservation_id}>
+                      <div>
+                        <strong>{reservation.book_title}</strong>
+                        <span>{reservation.student_no} · {reservation.reserved_at}</span>
+                      </div>
+                      <span className="preview-badge neutral">{reservation.status}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No reservations yet.</p>
+              )}
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Popular Books Snapshot</h2>
+              </div>
+              {dashboardPreview.popularBooks.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.popularBooks.map((book, index) => (
+                    <div className="preview-item" key={book.book_id}>
+                      <div>
+                        <strong>{index + 1}. {book.title}</strong>
+                        <span>{book.borrow_count} borrows · {book.reservation_count} reservations</span>
+                      </div>
+                      <span className="preview-meta">{book.popularity_score}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No ranking data yet.</p>
+              )}
             </section>
 
             <section className="info-panel">

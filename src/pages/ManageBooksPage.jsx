@@ -59,6 +59,7 @@ function ManageBooksPage() {
 
   const availableCount = books.filter((book) => book.status === 'AVAILABLE').length;
   const borrowedCount = books.filter((book) => book.status === 'BORROWED').length;
+  const reservedCount = books.filter((book) => book.status === 'RESERVED').length;
   const removedCount = books.filter((book) => book.status === 'REMOVED').length;
 
   const handleAddBook = async (event) => {
@@ -116,7 +117,8 @@ function ManageBooksPage() {
             <p className="page-intro">Add new mock books or mark available books as removed.</p>
           </div>
           <div className="mini-summary">
-            {availableCount} available · {borrowedCount} borrowed · {removedCount} removed
+            {availableCount} available · {borrowedCount} borrowed · {reservedCount} reserved ·{' '}
+            {removedCount} removed
           </div>
         </div>
 

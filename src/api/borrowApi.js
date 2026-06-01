@@ -1,5 +1,6 @@
 import { mockBooks } from '../mock/mockBooks.js';
 import { mockBorrowRecords } from '../mock/mockBorrowRecords.js';
+import { mockReservations } from '../mock/mockReservations.js';
 import { mockUsers } from '../mock/mockUsers.js';
 
 const ok = (message, data = null) => Promise.resolve({ success: true, message, data });
@@ -22,6 +23,10 @@ const addDays = (date, days) => {
 
 const getBook = (bookId) => mockBooks.find((book) => book.book_id === Number(bookId));
 const getUser = (userId) => mockUsers.find((user) => user.user_id === Number(userId));
+const hasWaitingReservation = (bookId) =>
+  mockReservations.some(
+    (reservation) => reservation.book_id === Number(bookId) && reservation.status === 'WAITING',
+  );
 
 const enrichRecord = (record) => {
   const book = getBook(record.book_id);
@@ -51,6 +56,16 @@ export function borrowBook(userId, bookId) {
   }
 
   const borrowDays = user.role_level === 'VIP' ? 14 : 7;
+  const borrowLimit = user.role_level === 'VIP' ? 5 : 3;
+  const activeBorrowCount = mockBorrowRecords.filter(
+    (record) =>
+      record.user_id === user.user_id && ['BORROWING', 'OVERDUE'].includes(record.record_status),
+  ).length;
+
+  if (activeBorrowCount >= borrowLimit) {
+    return fail(`${user.role_level} students can borrow up to ${borrowLimit} active books.`, null);
+  }
+
   const today = new Date();
   const borrowDate = dateToText(today);
   const dueDate = dateToText(addDays(today, borrowDays));
@@ -90,7 +105,8 @@ export function returnBook(recordId) {
   record.record_status = 'RETURNED';
 
   if (book && book.status !== 'REMOVED') {
-    book.status = 'AVAILABLE';
+    // 若有等待中的預約，歸還後保留 RESERVED 狀態。
+    book.status = hasWaitingReservation(book.book_id) ? 'RESERVED' : 'AVAILABLE';
   }
 
   return ok('Book returned successfully.', enrichRecord(record));

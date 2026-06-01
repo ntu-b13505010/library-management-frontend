@@ -3,6 +3,7 @@ import {
   getAllBooks,
   getAllBorrowRecords,
   getAllUsers,
+  getLibraryStatistics,
   reactivateUser,
   removeBook,
   suspendUser,
@@ -35,4 +36,8 @@ export function addLibraryBook(bookData) {
 
 export function removeLibraryBook(bookId) {
   return removeBook(bookId);
+}
+
+export function getAdminStatistics() {
+  return getLibraryStatistics();
 }

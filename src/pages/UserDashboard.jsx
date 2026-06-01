@@ -5,6 +5,7 @@ import {
   getStudentBorrowHistory,
   getStudentDueReminders,
 } from '../services/borrowService.js';
+import { getStudentReservations } from '../services/reservationService.js';
 import PageCard from '../components/PageCard.jsx';
 
 function UserDashboard() {
@@ -14,11 +15,13 @@ function UserDashboard() {
     dueSoon: 0,
     currentlyBorrowed: 0,
     historyCount: 0,
+    reservationCount: 0,
   });
   const [dashboardPreview, setDashboardPreview] = useState({
     dueSoon: [],
     borrowedBooks: [],
     recentHistory: [],
+    reservations: [],
   });
   const [isLoadingStats, setIsLoadingStats] = useState(false);
 
@@ -36,21 +39,26 @@ function UserDashboard() {
 
     const loadDashboardStats = async () => {
       setIsLoadingStats(true);
-      const [borrowedResult, historyResult, remindersResult] = await Promise.all([
+      const [borrowedResult, historyResult, remindersResult, reservationsResult] = await Promise.all([
         getCurrentBorrowedBooks(user.user_id),
         getStudentBorrowHistory(user.user_id),
         getStudentDueReminders(user.user_id),
+        getStudentReservations(user.user_id),
       ]);
 
       setStats({
         dueSoon: remindersResult.data.length,
         currentlyBorrowed: borrowedResult.data.length,
         historyCount: historyResult.data.length,
+        reservationCount: reservationsResult.data.filter(
+          (reservation) => reservation.status === 'WAITING',
+        ).length,
       });
       setDashboardPreview({
         dueSoon: remindersResult.data.slice(0, 3),
         borrowedBooks: borrowedResult.data.slice(0, 3),
         recentHistory: historyResult.data.slice(-3).reverse(),
+        reservations: reservationsResult.data.slice(0, 3),
       });
       setIsLoadingStats(false);
     };
@@ -90,6 +98,9 @@ function UserDashboard() {
             </button>
             <button className="side-menu__item" type="button" onClick={() => navigate('/student/due-reminders')}>
               Due Reminders
+            </button>
+            <button className="side-menu__item" type="button" onClick={() => navigate('/student/my-reservations')}>
+              My Reservations
             </button>
             <button className="side-menu__item" type="button" onClick={handleLogout}>Logout</button>
           </nav>
@@ -138,6 +149,10 @@ function UserDashboard() {
                 <span className="stat-value">{currentUser.role_level}</span>
                 <span className="stat-label">User Role</span>
               </div>
+              <div className="stat-card">
+                <span className="stat-value">{stats.reservationCount}</span>
+                <span className="stat-label">Waiting Reservations</span>
+              </div>
             </div>
           )}
 
@@ -151,10 +166,10 @@ function UserDashboard() {
                   {dashboardPreview.dueSoon.map((record) => (
                     <div className="preview-item" key={record.record_id}>
                       <div>
-                        <strong>{record.title}</strong>
+                        <strong>{record.book?.title || record.title || ''}</strong>
                         <span>Due date: {record.due_date}</span>
                       </div>
-                      <span className="preview-badge">{record.reminder}</span>
+                      <span className="preview-badge">{record.reminder_text}</span>
                     </div>
                   ))}
                 </div>
@@ -172,7 +187,7 @@ function UserDashboard() {
                   {dashboardPreview.borrowedBooks.map((record) => (
                     <div className="preview-item" key={record.record_id}>
                       <div>
-                        <strong>{record.title}</strong>
+                        <strong>{record.book?.title || record.title || ''}</strong>
                         <span>Borrowed: {record.borrow_date}</span>
                       </div>
                       <span className="preview-meta">{record.borrow_days} days</span>
@@ -193,7 +208,7 @@ function UserDashboard() {
                   {dashboardPreview.recentHistory.map((record) => (
                     <div className="preview-item" key={record.record_id}>
                       <div>
-                        <strong>{record.title}</strong>
+                        <strong>{record.book?.title || record.title || ''}</strong>
                         <span>
                           {record.borrow_date} · {record.return_date || 'Not returned'}
                         </span>
@@ -204,6 +219,27 @@ function UserDashboard() {
                 </div>
               ) : (
                 <p className="empty-state compact-empty">No borrow history yet.</p>
+              )}
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Reservation Summary</h2>
+              </div>
+              {dashboardPreview.reservations.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.reservations.map((reservation) => (
+                    <div className="preview-item" key={reservation.reservation_id}>
+                      <div>
+                        <strong>{reservation.book_title}</strong>
+                        <span>Reserved: {reservation.reserved_at}</span>
+                      </div>
+                      <span className="preview-badge neutral">{reservation.status}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No reservations yet.</p>
               )}
             </section>
 
