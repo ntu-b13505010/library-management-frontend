@@ -5,7 +5,6 @@ import {
   getStudentBorrowHistory,
   getStudentDueReminders,
 } from '../services/borrowService.js';
-import AppButton from '../components/AppButton.jsx';
 import PageCard from '../components/PageCard.jsx';
 
 function UserDashboard() {
@@ -15,6 +14,11 @@ function UserDashboard() {
     dueSoon: 0,
     currentlyBorrowed: 0,
     historyCount: 0,
+  });
+  const [dashboardPreview, setDashboardPreview] = useState({
+    dueSoon: [],
+    borrowedBooks: [],
+    recentHistory: [],
   });
   const [isLoadingStats, setIsLoadingStats] = useState(false);
 
@@ -42,6 +46,11 @@ function UserDashboard() {
         dueSoon: remindersResult.data.length,
         currentlyBorrowed: borrowedResult.data.length,
         historyCount: historyResult.data.length,
+      });
+      setDashboardPreview({
+        dueSoon: remindersResult.data.slice(0, 3),
+        borrowedBooks: borrowedResult.data.slice(0, 3),
+        recentHistory: historyResult.data.slice(-3).reverse(),
       });
       setIsLoadingStats(false);
     };
@@ -92,7 +101,6 @@ function UserDashboard() {
               <p className="eyebrow">Student Portal</p>
               <strong>Library Workspace</strong>
             </div>
-            <button type="button" onClick={handleLogout}>Logout</button>
           </header>
 
           <section className="welcome-banner professional-banner">
@@ -133,31 +141,94 @@ function UserDashboard() {
             </div>
           )}
 
-          <div className="dashboard-panels professional-panels">
+          <div className="dashboard-info-grid">
             <section className="info-panel">
               <div className="panel-title-row">
-                <h2>Due Reminders</h2>
-                <button type="button" onClick={() => navigate('/student/due-reminders')}>View all</button>
+                <h2>Due Soon Preview</h2>
               </div>
-              <p className="panel-main-number">{stats.dueSoon}</p>
-              <p className="panel-copy">book(s) need attention soon.</p>
+              {dashboardPreview.dueSoon.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.dueSoon.map((record) => (
+                    <div className="preview-item" key={record.record_id}>
+                      <div>
+                        <strong>{record.title}</strong>
+                        <span>Due date: {record.due_date}</span>
+                      </div>
+                      <span className="preview-badge">{record.reminder}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No books need attention soon.</p>
+              )}
             </section>
 
-            {/* 快速入口仍沿用原本功能。 */}
-            <section className="info-panel quick-actions-panel">
+            <section className="info-panel">
               <div className="panel-title-row">
-                <h2>Primary Actions</h2>
+                <h2>Current Borrowed Preview</h2>
               </div>
-              <div className="dashboard-actions quick-action-grid">
-                <AppButton onClick={() => navigate('/student/search-books')}>Search Books</AppButton>
-                <AppButton onClick={() => navigate('/student/my-borrowed-books')}>
-                  My Borrowings
-                </AppButton>
-                <AppButton onClick={() => navigate('/student/borrow-history')}>Borrow History</AppButton>
-                <AppButton onClick={() => navigate('/student/due-reminders')}>Due Reminders</AppButton>
-                <AppButton variant="secondary" onClick={handleLogout}>
-                  Logout
-                </AppButton>
+              {dashboardPreview.borrowedBooks.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.borrowedBooks.map((record) => (
+                    <div className="preview-item" key={record.record_id}>
+                      <div>
+                        <strong>{record.title}</strong>
+                        <span>Borrowed: {record.borrow_date}</span>
+                      </div>
+                      <span className="preview-meta">{record.borrow_days} days</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No books are currently borrowed.</p>
+              )}
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Recent Borrow History</h2>
+              </div>
+              {dashboardPreview.recentHistory.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.recentHistory.map((record) => (
+                    <div className="preview-item" key={record.record_id}>
+                      <div>
+                        <strong>{record.title}</strong>
+                        <span>
+                          {record.borrow_date} · {record.return_date || 'Not returned'}
+                        </span>
+                      </div>
+                      <span className="preview-badge neutral">{record.record_status}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No borrow history yet.</p>
+              )}
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Account Role Information</h2>
+              </div>
+              {/* 主內容保留資訊摘要，導覽集中在側邊欄。 */}
+              <div className="summary-list">
+                <div className="summary-row">
+                  <span>Student No.</span>
+                  <strong>{currentUser.student_no}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Name</span>
+                  <strong>{currentUser.name}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Role Level</span>
+                  <strong>{currentUser.role_level}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Account Status</span>
+                  <strong>{currentUser.status}</strong>
+                </div>
               </div>
             </section>
           </div>

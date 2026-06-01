@@ -5,7 +5,6 @@ import {
   getAdminBorrowRecords,
   getAdminUsers,
 } from '../services/adminService.js';
-import AppButton from '../components/AppButton.jsx';
 import PageCard from '../components/PageCard.jsx';
 
 function AdminDashboard() {
@@ -17,6 +16,11 @@ function AdminDashboard() {
     activeUsers: 0,
     suspendedUsers: 0,
     totalBorrowRecords: 0,
+  });
+  const [dashboardPreview, setDashboardPreview] = useState({
+    recentRecords: [],
+    users: [],
+    books: [],
   });
   const [isLoadingStats, setIsLoadingStats] = useState(false);
 
@@ -39,12 +43,21 @@ function AdminDashboard() {
         getAdminBorrowRecords(),
       ]);
 
+      const books = booksResult.data;
+      const users = usersResult.data;
+      const records = recordsResult.data;
+
       setStats({
-        totalBooks: booksResult.data.length,
-        borrowedBooks: booksResult.data.filter((book) => book.status === 'BORROWED').length,
-        activeUsers: usersResult.data.filter((user) => user.status === 'ACTIVE').length,
-        suspendedUsers: usersResult.data.filter((user) => user.status === 'SUSPENDED').length,
+        totalBooks: books.length,
+        borrowedBooks: books.filter((book) => book.status === 'BORROWED').length,
+        activeUsers: users.filter((user) => user.status === 'ACTIVE').length,
+        suspendedUsers: users.filter((user) => user.status === 'SUSPENDED').length,
         totalBorrowRecords: recordsResult.data.length,
+      });
+      setDashboardPreview({
+        recentRecords: records.slice(-4).reverse(),
+        users,
+        books,
       });
       setIsLoadingStats(false);
     };
@@ -92,7 +105,6 @@ function AdminDashboard() {
               <p className="eyebrow">Admin Portal</p>
               <strong>Librarian Control Center</strong>
             </div>
-            <button type="button" onClick={handleLogout}>Logout</button>
           </header>
 
           <section className="welcome-banner admin-banner professional-banner">
@@ -135,22 +147,95 @@ function AdminDashboard() {
             </div>
           )}
 
-          <section className="info-panel quick-actions-panel">
-            <div className="panel-title-row">
-              <h2>Control Desk</h2>
-            </div>
-            {/* 管理員功能入口，仍沿用既有路由。 */}
-            <div className="dashboard-actions admin-actions quick-action-grid">
-              <AppButton onClick={() => navigate('/admin/borrow-records')}>
-                View Borrow Records
-              </AppButton>
-              <AppButton onClick={() => navigate('/admin/manage-users')}>Manage Users</AppButton>
-              <AppButton onClick={() => navigate('/admin/manage-books')}>Manage Books</AppButton>
-              <AppButton variant="secondary" onClick={handleLogout}>
-                Logout
-              </AppButton>
-            </div>
-          </section>
+          <div className="dashboard-info-grid admin-info-grid">
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Recent Borrow Records</h2>
+              </div>
+              {dashboardPreview.recentRecords.length > 0 ? (
+                <div className="preview-list">
+                  {dashboardPreview.recentRecords.map((record) => (
+                    <div className="preview-item" key={record.record_id}>
+                      <div>
+                        <strong>{record.book_title}</strong>
+                        <span>
+                          {record.student_no} · Due {record.due_date}
+                        </span>
+                      </div>
+                      <span className="preview-badge neutral">{record.record_status}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state compact-empty">No borrow records are available.</p>
+              )}
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>User Status Summary</h2>
+              </div>
+              <div className="summary-list">
+                <div className="summary-row">
+                  <span>Active Users</span>
+                  <strong>{stats.activeUsers}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Suspended Users</span>
+                  <strong>{stats.suspendedUsers}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Total Users</span>
+                  <strong>{dashboardPreview.users.length}</strong>
+                </div>
+              </div>
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Book Status Summary</h2>
+              </div>
+              <div className="summary-list">
+                <div className="summary-row">
+                  <span>Available Books</span>
+                  <strong>
+                    {dashboardPreview.books.filter((book) => book.status === 'AVAILABLE').length}
+                  </strong>
+                </div>
+                <div className="summary-row">
+                  <span>Borrowed Books</span>
+                  <strong>{stats.borrowedBooks}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Removed Books</span>
+                  <strong>
+                    {dashboardPreview.books.filter((book) => book.status === 'REMOVED').length}
+                  </strong>
+                </div>
+              </div>
+            </section>
+
+            <section className="info-panel">
+              <div className="panel-title-row">
+                <h2>Admin System Overview</h2>
+              </div>
+              {/* 主內容呈現營運概覽，功能導覽集中於側邊欄。 */}
+              <div className="summary-list">
+                <div className="summary-row">
+                  <span>Signed In As</span>
+                  <strong>{currentAdmin.username}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Data Source</span>
+                  <strong>Mock API</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Management Scope</span>
+                  <strong>Users · Books · Records</strong>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
       </PageCard>
     </main>
