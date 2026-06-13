@@ -1700,7 +1700,9 @@ select {
 }
 
 .search-books-toolbar {
-  grid-template-columns: minmax(260px, 1fr) 170px auto;
+  width: 100%;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 200px) auto;
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -1708,17 +1710,27 @@ select {
 .search-books-toolbar input,
 .search-books-toolbar select,
 .search-books-toolbar .app-button {
+  box-sizing: border-box;
+  max-width: 100%;
   min-height: 38px;
   height: 38px;
 }
 
 .search-books-toolbar input,
 .search-books-toolbar select {
+  width: 100%;
+  min-width: 0;
   padding-block: 7px;
   font-size: 0.88rem;
 }
 
+.search-books-toolbar select {
+  min-width: 160px;
+}
+
 .search-books-toolbar .app-button {
+  width: auto;
+  white-space: nowrap;
   padding: 0 18px;
 }
 
@@ -1777,7 +1789,7 @@ select {
   }
 
   .search-books-toolbar {
-    grid-template-columns: minmax(0, 1fr) 150px auto;
+    grid-template-columns: minmax(0, 1fr) minmax(160px, 190px) auto;
   }
 
   .search-books-table-wrap {
@@ -1786,6 +1798,17 @@ select {
 
   .search-books-table {
     min-width: 760px;
+  }
+}
+
+@media (max-width: 760px) and (min-width: 641px) {
+  .search-books-toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(160px, 200px);
+  }
+
+  .search-books-toolbar .app-button {
+    grid-column: 1 / -1;
+    justify-self: end;
   }
 }
 
@@ -1811,6 +1834,7 @@ select {
   .search-books-toolbar select,
   .search-books-toolbar .app-button {
     width: 100%;
+    min-width: 0;
     min-height: 42px;
     height: 42px;
   }
