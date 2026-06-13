@@ -1666,6 +1666,169 @@ select {
   background: linear-gradient(180deg, #795337, #654027);
 }
 
+/* Search Books density: keep catalog actions close to the visible laptop viewport. */
+.search-books-card {
+  width: min(1180px, 100%);
+  padding: 22px 26px;
+}
+
+.search-books-header {
+  gap: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+
+.search-books-header .eyebrow {
+  margin-bottom: 4px;
+}
+
+.search-books-header h1 {
+  margin-bottom: 4px;
+  font-size: clamp(1.65rem, 2.6vw, 2.15rem);
+  line-height: 1.1;
+}
+
+.search-books-header .page-intro {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.search-books-header .mini-summary {
+  padding: 7px 11px;
+  font-size: 0.78rem;
+}
+
+.search-books-toolbar {
+  grid-template-columns: minmax(260px, 1fr) 170px auto;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.search-books-toolbar input,
+.search-books-toolbar select,
+.search-books-toolbar .app-button {
+  min-height: 38px;
+  height: 38px;
+}
+
+.search-books-toolbar input,
+.search-books-toolbar select {
+  padding-block: 7px;
+  font-size: 0.88rem;
+}
+
+.search-books-toolbar .app-button {
+  padding: 0 18px;
+}
+
+.search-books-card .form-message,
+.search-books-card .loading-text {
+  margin: 8px 0;
+  padding-block: 8px;
+}
+
+.search-books-table-wrap {
+  max-height: min(42vh, 360px);
+  overflow: auto;
+  border: 1px solid rgba(103, 64, 34, 0.14);
+  border-radius: 10px;
+  background: #fffdf8;
+  -webkit-overflow-scrolling: touch;
+}
+
+.search-books-table {
+  font-size: 0.84rem;
+}
+
+.search-books-table th,
+.search-books-table td {
+  height: 38px;
+  padding: 7px 10px;
+  line-height: 1.25;
+}
+
+.search-books-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.search-books-table .status-pill {
+  min-height: 22px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+}
+
+.search-books-actions {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.search-books-actions .app-button {
+  min-height: 38px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 900px) {
+  .search-books-card {
+    padding: 18px;
+  }
+
+  .search-books-toolbar {
+    grid-template-columns: minmax(0, 1fr) 150px auto;
+  }
+
+  .search-books-table-wrap {
+    max-height: 46vh;
+  }
+
+  .search-books-table {
+    min-width: 760px;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-books-card {
+    padding: 16px;
+  }
+
+  .search-books-header {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .search-books-header h1 {
+    font-size: 1.55rem;
+  }
+
+  .search-books-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .search-books-toolbar input,
+  .search-books-toolbar select,
+  .search-books-toolbar .app-button {
+    width: 100%;
+    min-height: 42px;
+    height: 42px;
+  }
+
+  .search-books-table-wrap {
+    max-height: 48vh;
+  }
+
+  .search-books-actions {
+    margin-top: 10px;
+  }
+
+  .search-books-actions .app-button {
+    width: 100%;
+    min-height: 42px;
+  }
+}
+
 /* Logo cleanup: hide any fallback glyph so only the outline book remains visible. */
 .brand-icon,
 .sidebar-logo,

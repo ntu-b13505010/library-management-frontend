@@ -119,8 +119,8 @@ function SearchBooksPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card search-books-card">
+        <div className="section-header search-books-header">
           <div>
             <p className="eyebrow">Student Library</p>
             <h1>Search Books</h1>
@@ -134,7 +134,7 @@ function SearchBooksPage() {
           </div>
         </div>
 
-        <form className="toolbar" onSubmit={handleSearch}>
+        <form className="toolbar search-books-toolbar" onSubmit={handleSearch}>
           <input
             type="text"
             placeholder="Enter keyword"
@@ -170,8 +170,8 @@ function SearchBooksPage() {
 
         {isLoading && <p className="loading-text">Loading...</p>}
 
-        <div className="table-wrap">
-          <table className="data-table">
+        <div className="table-wrap search-books-table-wrap">
+          <table className="data-table search-books-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -214,7 +214,7 @@ function SearchBooksPage() {
           </table>
         </div>
 
-        <div className="page-actions">
+        <div className="page-actions search-books-actions">
           <AppButton
             onClick={handleBorrow}
             disabled={!selectedBook || selectedBook.status !== 'AVAILABLE'}

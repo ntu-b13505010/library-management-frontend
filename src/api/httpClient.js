@@ -1,8 +1,12 @@
 import axios from 'axios';
 
-// Backend API base URL for local Spring Boot integration.
+// 統一使用 Vite 環境變數，並移除尾端斜線避免 URL 重複。
+const apiBaseUrl = String(import.meta.env.VITE_API_BASE_URL || '')
+  .trim()
+  .replace(/\/+$/, '');
+
 const httpClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081',
+  baseURL: apiBaseUrl,
   timeout: 10000,
 });
 
