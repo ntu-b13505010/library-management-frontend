@@ -156,13 +156,6 @@ function LoginPage() {
                 </div>
               </form>
 
-              <div className="test-hints">
-                <p className="test-hints__title">Test accounts</p>
-                <p>Student: S1001 / 123456, S1002 / 123456</p>
-                <p>Suspended student: S1003 / 123456</p>
-                <p>Admin: admin / admin123, librarian / library123</p>
-              </div>
-              <p className="ui-version">UI version: warm-library-v2</p>
             </div>
           </PageCard>
         </div>
