@@ -47,8 +47,8 @@ function AllBorrowRecordsPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card admin-compact-card">
+        <div className="section-header admin-compact-header">
           <div>
             <p className="eyebrow">Admin Library</p>
             <h1>All Borrow Records</h1>
@@ -57,7 +57,7 @@ function AllBorrowRecordsPage() {
           <div className="mini-summary">{records.length} total record(s)</div>
         </div>
 
-        <form className="toolbar" onSubmit={handleSearch}>
+        <form className="toolbar admin-compact-toolbar" onSubmit={handleSearch}>
           <input
             type="search"
             aria-label="Search borrow records"
@@ -82,8 +82,8 @@ function AllBorrowRecordsPage() {
 
         {isLoading && <p className="loading-text">Loading...</p>}
 
-        <div className="table-wrap">
-          <table className="data-table">
+        <div className="table-wrap admin-compact-table-wrap">
+          <table className="data-table admin-compact-table admin-wide-table">
             <thead>
               <tr>
                 <th>Record ID</th>
@@ -128,7 +128,7 @@ function AllBorrowRecordsPage() {
           </table>
         </div>
 
-        <div className="page-actions">
+        <div className="page-actions admin-compact-actions">
           <AppButton onClick={() => loadRecords(keyword)}>Refresh</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/admin')}>
             Back
