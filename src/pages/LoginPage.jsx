@@ -68,21 +68,34 @@ function LoginPage() {
               </p>
             </div>
 
-            <div className="system-status-panel">
-              <p>LIBRARY INFORMATION</p>
-              <div className="status-row">
-                <span>Digital Catalog</span>
-                <strong>Available</strong>
+            <section className="library-information" aria-labelledby="library-information-title">
+              <p id="library-information-title" className="library-information__title">
+                LIBRARY INFORMATION
+              </p>
+              <div className="library-information__grid">
+                <article className="library-information__card">
+                  <div className="library-information__card-heading">
+                    <strong>Digital Catalog</strong>
+                    <span>Available</span>
+                  </div>
+                  <p>Search books by title, author, subject, publisher, and ISBN.</p>
+                </article>
+                <article className="library-information__card">
+                  <div className="library-information__card-heading">
+                    <strong>Circulation Services</strong>
+                    <span>Active</span>
+                  </div>
+                  <p>Borrow, return, and review due reminders.</p>
+                </article>
+                <article className="library-information__card">
+                  <div className="library-information__card-heading">
+                    <strong>Reservation Services</strong>
+                    <span>Available</span>
+                  </div>
+                  <p>Reserve borrowed books and track reservation status.</p>
+                </article>
               </div>
-              <div className="status-row">
-                <span>Circulation Services</span>
-                <strong>Active</strong>
-              </div>
-              <div className="status-row">
-                <span>Reservation Services</span>
-                <strong>Available</strong>
-              </div>
-            </div>
+            </section>
 
             <div className="module-list">
               <p>Available modules</p>
