@@ -69,17 +69,18 @@ function LoginPage() {
             </div>
 
             <div className="system-status-panel">
+              <p>LIBRARY INFORMATION</p>
               <div className="status-row">
-                <span>Environment</span>
-                <strong>Frontend Mock Demo</strong>
+                <span>Digital Catalog</span>
+                <strong>Available</strong>
               </div>
               <div className="status-row">
-                <span>Access Roles</span>
-                <strong>Student · Administrator</strong>
+                <span>Circulation Services</span>
+                <strong>Active</strong>
               </div>
               <div className="status-row">
-                <span>Integration</span>
-                <strong>Service layer ready</strong>
+                <span>Reservation Services</span>
+                <strong>Available</strong>
               </div>
             </div>
 
