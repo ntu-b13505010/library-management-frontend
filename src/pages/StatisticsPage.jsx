@@ -47,8 +47,8 @@ function StatisticsPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card admin-compact-card admin-statistics-card">
+        <div className="section-header admin-compact-header">
           <div>
             <p className="eyebrow">Admin Library</p>
             <h1>Statistics</h1>
@@ -61,7 +61,7 @@ function StatisticsPage() {
           <p className="loading-text">Loading...</p>
         ) : (
           <>
-            <div className="stats-grid stats-grid--admin">
+            <div className="stats-grid stats-grid--admin admin-statistics-grid">
               <div className="stat-card">
                 <span className="stat-value">{stats.totalBooks}</span>
                 <span className="stat-label">Total Books</span>
@@ -92,12 +92,12 @@ function StatisticsPage() {
               </div>
             </div>
 
-            <div className="dashboard-info-grid">
-              <section className="info-panel">
+            <div className="dashboard-info-grid admin-ranking-grid">
+              <section className="info-panel admin-ranking-panel">
                 <div className="panel-title-row">
                   <h2>Popular Books</h2>
                 </div>
-                <div className="table-wrap compact-table-wrap">
+                <div className="table-wrap compact-table-wrap admin-ranking-table-wrap">
                   <table className="data-table">
                     <thead>
                       <tr>
@@ -128,11 +128,11 @@ function StatisticsPage() {
                 </div>
               </section>
 
-              <section className="info-panel">
+              <section className="info-panel admin-ranking-panel">
                 <div className="panel-title-row">
                   <h2>Popular Subjects</h2>
                 </div>
-                <div className="table-wrap compact-table-wrap">
+                <div className="table-wrap compact-table-wrap admin-ranking-table-wrap">
                   <table className="data-table">
                     <thead>
                       <tr>
@@ -166,7 +166,7 @@ function StatisticsPage() {
           </>
         )}
 
-        <div className="page-actions">
+        <div className="page-actions admin-compact-actions">
           <AppButton onClick={loadStats}>Refresh</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/admin')}>
             Back
