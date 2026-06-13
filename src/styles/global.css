@@ -2917,6 +2917,39 @@ select {
   line-height: 1.5;
 }
 
+@media (max-width: 920px) {
+  .library-information__grid {
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 640px) {
+  .library-information {
+    margin: 20px 0;
+  }
+
+  .library-information__grid {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .library-information__card {
+    padding: 12px 13px;
+  }
+
+  .library-information__card-heading {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .library-information__card p {
+    margin-top: 6px;
+  }
+}
+
 .portal-login-card {
   align-self: stretch;
   border: 0;
