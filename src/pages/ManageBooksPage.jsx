@@ -135,8 +135,8 @@ function ManageBooksPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card admin-compact-card manage-books-card">
+        <div className="section-header admin-compact-header">
           <div>
             <p className="eyebrow">Admin Library</p>
             <h1>Manage Books</h1>
@@ -148,7 +148,7 @@ function ManageBooksPage() {
           </div>
         </div>
 
-        <form className="toolbar" onSubmit={handleSearch}>
+        <form className="toolbar admin-compact-toolbar" onSubmit={handleSearch}>
           <input
             type="search"
             aria-label="Search books"
@@ -159,7 +159,7 @@ function ManageBooksPage() {
           <AppButton type="submit">Search</AppButton>
         </form>
 
-        <form className="admin-form-grid" onSubmit={handleAddBook}>
+        <form className="admin-form-grid manage-books-form" onSubmit={handleAddBook}>
           <div className="form-section-title">Add Book</div>
           <label>
             Title
@@ -250,8 +250,8 @@ function ManageBooksPage() {
 
         {isLoading && <p className="loading-text">Loading...</p>}
 
-        <div className="table-wrap">
-          <table className="data-table">
+        <div className="table-wrap admin-compact-table-wrap manage-books-table-wrap">
+          <table className="data-table admin-compact-table admin-wide-table">
             <thead>
               <tr>
                 <th>Book ID</th>
@@ -298,7 +298,7 @@ function ManageBooksPage() {
           </table>
         </div>
 
-        <div className="page-actions">
+        <div className="page-actions admin-compact-actions">
           <AppButton variant="secondary" onClick={() => loadBooks(keyword)}>
             Refresh
           </AppButton>
