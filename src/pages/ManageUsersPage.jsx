@@ -11,17 +11,20 @@ import PageCard from '../components/PageCard.jsx';
 function ManageUsersPage() {
   const navigate = useNavigate();
   const [currentAdmin, setCurrentAdmin] = useState(null);
+  const [keyword, setKeyword] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadUsers = async () => {
+  const loadUsers = async (searchKeyword = keyword) => {
     setIsLoading(true);
-    const result = await getAdminUsers();
+    const result = await getAdminUsers(searchKeyword);
     setUsers(result.data);
-    setSelectedUserId(null);
+    setSelectedUserId((currentId) =>
+      result.data.some((user) => user.user_id === currentId) ? currentId : null,
+    );
     setIsLoading(false);
   };
 
@@ -34,7 +37,7 @@ function ManageUsersPage() {
     }
 
     setCurrentAdmin(JSON.parse(storedAdmin));
-    loadUsers();
+    loadUsers('');
   }, [navigate]);
 
   const selectedUser = users.find((user) => user.user_id === selectedUserId);
@@ -43,7 +46,13 @@ function ManageUsersPage() {
 
   const handleRefresh = () => {
     setMessage('');
-    loadUsers();
+    loadUsers(keyword);
+  };
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    setMessage('');
+    await loadUsers(keyword);
   };
 
   const handleSuspend = async () => {
@@ -108,6 +117,17 @@ function ManageUsersPage() {
           </div>
         </div>
 
+        <form className="toolbar" onSubmit={handleSearch}>
+          <input
+            type="search"
+            aria-label="Search users"
+            placeholder="Search student no, name, role level, or status"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+          />
+          <AppButton type="submit">Search</AppButton>
+        </form>
+
         {message && (
           <p
             className={
@@ -156,7 +176,7 @@ function ManageUsersPage() {
               {!isLoading && users.length === 0 && (
                 <tr>
                   <td colSpan="6">
-                    <div className="empty-state">No users are available in the mock data.</div>
+                    <div className="empty-state">No matching records found.</div>
                   </td>
                 </tr>
               )}

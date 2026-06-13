@@ -77,9 +77,11 @@ function UserDashboard() {
     return null;
   }
 
+  const borrowPeriod = currentUser.role_level === 'VIP' ? 14 : 7;
+
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="dashboard-card library-workspace">
+      <PageCard className="dashboard-card library-workspace student-dashboard">
         <aside className="dashboard-sidebar app-sidebar">
           <div className="sidebar-brand">
             <span className="sidebar-logo" aria-hidden="true" />
@@ -114,7 +116,7 @@ function UserDashboard() {
             </div>
           </header>
 
-          <section className="welcome-banner professional-banner">
+          <section className="welcome-banner professional-banner student-dashboard__banner">
             <div>
               <h1>
                 Welcome back, {currentUser.name}
@@ -132,32 +134,28 @@ function UserDashboard() {
           {isLoadingStats ? (
             <p className="loading-text">Loading...</p>
           ) : (
-            <div className="stats-grid">
+            <div className="stats-grid student-dashboard__stats">
               <div className="stat-card">
                 <span className="stat-value">{stats.dueSoon}</span>
-                <span className="stat-label">Books Due Soon</span>
+                <span className="stat-label">Due Soon</span>
               </div>
               <div className="stat-card">
                 <span className="stat-value">{stats.currentlyBorrowed}</span>
-                <span className="stat-label">Currently Borrowed</span>
+                <span className="stat-label">Borrowed</span>
               </div>
               <div className="stat-card">
                 <span className="stat-value">{stats.historyCount}</span>
-                <span className="stat-label">Borrow History Count</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-value">{currentUser.role_level}</span>
-                <span className="stat-label">User Role</span>
+                <span className="stat-label">History</span>
               </div>
               <div className="stat-card">
                 <span className="stat-value">{stats.reservationCount}</span>
-                <span className="stat-label">Waiting Reservations</span>
+                <span className="stat-label">Reservations</span>
               </div>
             </div>
           )}
 
-          <div className="dashboard-info-grid">
-            <section className="info-panel">
+          <div className="dashboard-info-grid student-dashboard__content">
+            <section className="info-panel student-dashboard__panel">
               <div className="panel-title-row">
                 <h2>Due Soon Preview</h2>
               </div>
@@ -178,7 +176,7 @@ function UserDashboard() {
               )}
             </section>
 
-            <section className="info-panel">
+            <section className="info-panel student-dashboard__panel">
               <div className="panel-title-row">
                 <h2>Current Borrowed Preview</h2>
               </div>
@@ -199,7 +197,7 @@ function UserDashboard() {
               )}
             </section>
 
-            <section className="info-panel">
+            <section className="info-panel student-dashboard__panel">
               <div className="panel-title-row">
                 <h2>Recent Borrow History</h2>
               </div>
@@ -222,7 +220,7 @@ function UserDashboard() {
               )}
             </section>
 
-            <section className="info-panel">
+            <section className="info-panel student-dashboard__panel">
               <div className="panel-title-row">
                 <h2>Reservation Summary</h2>
               </div>
@@ -243,9 +241,9 @@ function UserDashboard() {
               )}
             </section>
 
-            <section className="info-panel">
+            <section className="info-panel student-dashboard__panel student-dashboard__account">
               <div className="panel-title-row">
-                <h2>Account Role Information</h2>
+                <h2>Account &amp; Borrowing</h2>
               </div>
               {/* 主內容保留資訊摘要，導覽集中在側邊欄。 */}
               <div className="summary-list">
@@ -260,6 +258,10 @@ function UserDashboard() {
                 <div className="summary-row">
                   <span>Role Level</span>
                   <strong>{currentUser.role_level}</strong>
+                </div>
+                <div className="summary-row">
+                  <span>Borrow Period</span>
+                  <strong>{borrowPeriod} days</strong>
                 </div>
                 <div className="summary-row">
                   <span>Account Status</span>

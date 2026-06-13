@@ -1,73 +1,83 @@
-import { mockBooks } from '../mock/mockBooks.js';
-import { mockBorrowRecords } from '../mock/mockBorrowRecords.js';
-import { mockReservations } from '../mock/mockReservations.js';
-import { mockUsers } from '../mock/mockUsers.js';
+import httpClient from './httpClient.js';
 
 const ok = (message, data = null) => Promise.resolve({ success: true, message, data });
 const fail = (message, data = null) => Promise.resolve({ success: false, message, data });
 
-const withReservationState = (book) => ({
-  ...book,
-  has_waiting_reservation: mockReservations.some(
-    (reservation) => reservation.book_id === book.book_id && reservation.status === 'WAITING',
-  ),
+const normalizeBook = (book) => ({
+  book_id: book.book_id ?? book.bookId,
+  title: book.title || '',
+  authors: book.authors || '',
+  subjects: book.subjects || '',
+  publisher: book.publisher || '',
+  publish_year: book.publish_year ?? book.publishYear ?? '',
+  edition: book.edition || '',
+  format_desc: book.format_desc ?? book.formatDesc ?? '',
+  source: book.source || '',
+  isbn: book.isbn || '',
+  note: book.note || '',
+  status: book.status || 'AVAILABLE',
+  has_waiting_reservation: book.has_waiting_reservation ?? book.hasWaitingReservation ?? false,
 });
 
-export function searchBooks(keyword = '', searchField = 'all') {
-  const normalizedKeyword = keyword.trim().toLowerCase();
-  const fieldMap = {
-    title: ['title'],
-    author: ['authors'],
-    subject: ['subjects'],
-    publisher: ['publisher'],
-    isbn: ['isbn'],
-    all: ['title', 'authors', 'subjects', 'publisher', 'isbn'],
-  };
-  const searchableFields = fieldMap[searchField] || fieldMap.all;
+const normalizeBorrowRecord = (record) => ({
+  ...record,
+  record_id: record.record_id ?? record.recordId,
+  student_no: record.student_no ?? record.studentNo ?? '',
+  user_name: record.user_name ?? record.userName ?? '',
+  book_id: record.book_id ?? record.bookId,
+  borrow_date: record.borrow_date ?? record.borrowDate,
+  due_date: record.due_date ?? record.dueDate,
+  return_date: record.return_date ?? record.returnDate ?? null,
+  borrow_days: record.borrow_days ?? record.borrowDays,
+  record_status: record.record_status ?? record.recordStatus,
+});
 
-  // REMOVED 書籍不顯示在一般搜尋結果中。
-  const books = mockBooks.filter((book) => {
-    if (book.status === 'REMOVED') {
-      return false;
-    }
+const getArrayData = (payload) => (Array.isArray(payload) ? payload : payload?.data || []);
 
-    if (!normalizedKeyword) {
-      return true;
-    }
-
-    return searchableFields.some((field) =>
-      String(book[field] || '')
-        .toLowerCase()
-        .includes(normalizedKeyword),
-    );
-  });
-
-  return ok('Books loaded successfully.', books.map(withReservationState));
-}
-
-export function getBookDetail(bookId) {
-  const book = mockBooks.find((item) => item.book_id === Number(bookId));
-
-  if (!book || book.status === 'REMOVED') {
-    return fail('Book does not exist.', null);
-  }
-
-  return ok('Book detail loaded successfully.', withReservationState(book));
-}
-
-export function getBookBorrowHistory(bookId) {
-  const selectedBookId = Number(bookId);
-  const records = mockBorrowRecords
-    .filter((record) => record.book_id === selectedBookId)
-    .map((record) => {
-      const user = mockUsers.find((item) => item.user_id === record.user_id);
-
-      return {
-        ...record,
-        student_no: user?.student_no || '',
-        user_name: user?.name || '',
-      };
+export async function searchBooks(keyword = '', searchField = 'all') {
+  try {
+    const response = await httpClient.get('/api/books', {
+      params: {
+        keyword,
+        searchField,
+      },
     });
 
-  return ok('Book borrow history loaded successfully.', records);
+    return ok('Books loaded successfully.', getArrayData(response.data).map(normalizeBook));
+  } catch (error) {
+    return fail(error.response?.data?.message || 'Books request failed.', []);
+  }
+}
+
+export async function getBookDetail(bookId) {
+  try {
+    const response = await httpClient.get(`/api/books/${bookId}`);
+    const bookData = response.data?.data ?? response.data;
+
+    if (!bookData) {
+      return fail('Book does not exist.', null);
+    }
+
+    const book = normalizeBook(bookData);
+
+    if (!book || book.status === 'REMOVED') {
+      return fail('Book does not exist.', null);
+    }
+
+    return ok('Book detail loaded successfully.', book);
+  } catch (error) {
+    return fail(error.response?.data?.message || 'Book detail request failed.', null);
+  }
+}
+
+export async function getBookBorrowHistory(bookId) {
+  try {
+    const response = await httpClient.get(`/api/books/${bookId}/borrow-history`);
+    return ok(
+      'Book borrow history loaded successfully.',
+      getArrayData(response.data).map(normalizeBorrowRecord),
+    );
+  } catch (error) {
+    return fail(error.response?.data?.message || 'Book borrow history request failed.', []);
+  }
 }

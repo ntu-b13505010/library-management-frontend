@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// 未来后端 API 完成后，可在这里统一设置 baseURL 和拦截器。
+// Backend API base URL for local Spring Boot integration.
 const httpClient = axios.create({
-  baseURL: '',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081',
   timeout: 10000,
 });
 

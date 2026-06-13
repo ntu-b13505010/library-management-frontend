@@ -7,14 +7,15 @@ import PageCard from '../components/PageCard.jsx';
 function ViewReservationsPage() {
   const navigate = useNavigate();
   const [currentAdmin, setCurrentAdmin] = useState(null);
+  const [keyword, setKeyword] = useState('');
   const [reservations, setReservations] = useState([]);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadReservations = async () => {
+  const loadReservations = async (searchKeyword = keyword) => {
     setIsLoading(true);
-    const result = await getAdminReservations();
+    const result = await getAdminReservations(searchKeyword);
     setReservations(result.data);
     setMessageType(result.success ? 'success' : 'error');
     setMessage(result.message);
@@ -30,8 +31,14 @@ function ViewReservationsPage() {
     }
 
     setCurrentAdmin(JSON.parse(storedAdmin));
-    loadReservations();
+    loadReservations('');
   }, [navigate]);
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    setMessage('');
+    await loadReservations(keyword);
+  };
 
   if (!currentAdmin) {
     return null;
@@ -51,6 +58,17 @@ function ViewReservationsPage() {
             {reservations.length} total
           </div>
         </div>
+
+        <form className="toolbar" onSubmit={handleSearch}>
+          <input
+            type="search"
+            aria-label="Search reservations"
+            placeholder="Search student no, user, book, or status"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+          />
+          <AppButton type="submit">Search</AppButton>
+        </form>
 
         {message && (
           <p
@@ -98,7 +116,7 @@ function ViewReservationsPage() {
               {!isLoading && reservations.length === 0 && (
                 <tr>
                   <td colSpan="7">
-                    <div className="empty-state">No reservations are available yet.</div>
+                    <div className="empty-state">No matching records found.</div>
                   </td>
                 </tr>
               )}
@@ -107,7 +125,7 @@ function ViewReservationsPage() {
         </div>
 
         <div className="page-actions">
-          <AppButton onClick={loadReservations}>Refresh</AppButton>
+          <AppButton onClick={() => loadReservations(keyword)}>Refresh</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/admin')}>
             Back
           </AppButton>

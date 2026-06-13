@@ -2961,6 +2961,129 @@ select {
   text-align: left;
 }
 
+/* Student dashboard: compact summaries with navigation kept in the sidebar. */
+.student-dashboard .dashboard-main {
+  padding: 18px 22px 22px;
+}
+
+.student-dashboard .dashboard-topbar {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.student-dashboard__banner {
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 18px;
+  margin-bottom: 12px;
+  padding: 16px 20px;
+}
+
+.student-dashboard__banner h1 {
+  margin-bottom: 6px;
+  font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+}
+
+.student-dashboard__banner .banner-summary {
+  min-width: 0;
+  padding-left: 18px;
+}
+
+.student-dashboard__banner .banner-summary strong {
+  margin-bottom: 8px;
+}
+
+.student-dashboard__stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.student-dashboard__stats .stat-card {
+  min-height: 68px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+}
+
+.student-dashboard__stats .stat-value {
+  font-size: 1.45rem;
+}
+
+.student-dashboard__stats .stat-label {
+  line-height: 1.25;
+}
+
+.student-dashboard__content {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.student-dashboard__panel {
+  padding: 14px;
+}
+
+.student-dashboard__panel .panel-title-row h2 {
+  font-size: 1rem;
+}
+
+.student-dashboard__panel .preview-list,
+.student-dashboard__panel .summary-list {
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.student-dashboard__panel .preview-item {
+  min-height: 48px;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.student-dashboard__panel .preview-item strong {
+  font-size: 0.84rem;
+}
+
+.student-dashboard__panel .preview-item span {
+  margin-top: 2px;
+  font-size: 0.74rem;
+}
+
+.student-dashboard__panel .preview-badge,
+.student-dashboard__panel .preview-meta {
+  padding: 5px 7px;
+  font-size: 0.68rem !important;
+}
+
+.student-dashboard__account {
+  grid-column: 1 / -1;
+}
+
+.student-dashboard__account .summary-list {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.student-dashboard__account .summary-row {
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  border-right: 1px solid rgba(103, 64, 34, 0.1);
+  border-bottom: 0;
+  padding: 0 12px 0 0;
+}
+
+.student-dashboard__account .summary-row:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.student-dashboard .compact-empty {
+  min-height: 48px;
+  margin-top: 10px;
+  padding: 12px;
+  font-size: 0.82rem;
+}
+
 @media (max-width: 920px) {
   .portal-layout,
   .portal-layout--professional,
@@ -2984,6 +3107,36 @@ select {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+
+  .student-dashboard__banner {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dashboard__banner .banner-summary {
+    padding: 12px 0 0;
+  }
+
+  .student-dashboard__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .student-dashboard__content {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dashboard__account {
+    grid-column: auto;
+  }
+
+  .student-dashboard__account .summary-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .student-dashboard__account .summary-row {
+    border-right: 0;
+    border-bottom: 1px solid rgba(103, 64, 34, 0.1);
+    padding: 0 0 8px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2997,6 +3150,43 @@ select {
   .preview-meta,
   .summary-row strong {
     text-align: left;
+  }
+
+  .student-dashboard .dashboard-main {
+    padding: 16px;
+  }
+
+  .student-dashboard .app-sidebar {
+    padding: 18px 16px;
+  }
+
+  .student-dashboard .sidebar-brand {
+    margin-bottom: 14px;
+  }
+
+  .student-dashboard .side-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .student-dashboard .side-menu__item {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+
+  .student-dashboard__stats .stat-card {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    align-content: center;
+  }
+
+  .student-dashboard__account .summary-list {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dashboard__account .summary-row {
+    flex-direction: row;
   }
 }
 

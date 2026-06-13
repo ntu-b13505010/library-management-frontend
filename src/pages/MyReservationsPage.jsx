@@ -49,7 +49,7 @@ function MyReservationsPage() {
       return;
     }
 
-    const result = await cancelStudentReservation(selectedReservationId);
+    const result = await cancelStudentReservation(currentUser.user_id, selectedReservationId);
     setMessageType(result.success ? 'success' : 'error');
     setMessage(result.message);
 

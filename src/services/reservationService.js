@@ -14,10 +14,10 @@ export function getStudentReservations(userId) {
   return getMyReservations(userId);
 }
 
-export function cancelStudentReservation(reservationId) {
-  return cancelReservation(reservationId);
+export function cancelStudentReservation(userId, reservationId) {
+  return cancelReservation(userId, reservationId);
 }
 
-export function getAdminReservations() {
-  return getAllReservations();
+export function getAdminReservations(keyword = '') {
+  return getAllReservations(keyword);
 }

@@ -7,14 +7,15 @@ import PageCard from '../components/PageCard.jsx';
 function AllBorrowRecordsPage() {
   const navigate = useNavigate();
   const [currentAdmin, setCurrentAdmin] = useState(null);
+  const [keyword, setKeyword] = useState('');
   const [records, setRecords] = useState([]);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadRecords = async () => {
+  const loadRecords = async (searchKeyword = keyword) => {
     setIsLoading(true);
-    const result = await getAdminBorrowRecords();
+    const result = await getAdminBorrowRecords(searchKeyword);
     setRecords(result.data);
     setMessageType(result.success ? 'success' : 'error');
     setMessage(result.message);
@@ -31,8 +32,14 @@ function AllBorrowRecordsPage() {
 
     // 管理員頁面需要登入後才能使用。
     setCurrentAdmin(JSON.parse(storedAdmin));
-    loadRecords();
+    loadRecords('');
   }, [navigate]);
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    setMessage('');
+    await loadRecords(keyword);
+  };
 
   if (!currentAdmin) {
     return null;
@@ -49,6 +56,17 @@ function AllBorrowRecordsPage() {
           </div>
           <div className="mini-summary">{records.length} total record(s)</div>
         </div>
+
+        <form className="toolbar" onSubmit={handleSearch}>
+          <input
+            type="search"
+            aria-label="Search borrow records"
+            placeholder="Search student no, user, book, or status"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+          />
+          <AppButton type="submit">Search</AppButton>
+        </form>
 
         {message && (
           <p
@@ -102,7 +120,7 @@ function AllBorrowRecordsPage() {
               {!isLoading && records.length === 0 && (
                 <tr>
                   <td colSpan="10">
-                    <div className="empty-state">No borrow records are available yet.</div>
+                    <div className="empty-state">No matching records found.</div>
                   </td>
                 </tr>
               )}
@@ -111,7 +129,7 @@ function AllBorrowRecordsPage() {
         </div>
 
         <div className="page-actions">
-          <AppButton onClick={loadRecords}>Refresh</AppButton>
+          <AppButton onClick={() => loadRecords(keyword)}>Refresh</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/admin')}>
             Back
           </AppButton>

@@ -4,6 +4,7 @@ import {
   addLibraryBook,
   getAdminBooks,
   removeLibraryBook,
+  restoreLibraryBook,
 } from '../services/adminService.js';
 import AppButton from '../components/AppButton.jsx';
 import PageCard from '../components/PageCard.jsx';
@@ -21,6 +22,7 @@ const initialBookForm = {
 function ManageBooksPage() {
   const navigate = useNavigate();
   const [currentAdmin, setCurrentAdmin] = useState(null);
+  const [keyword, setKeyword] = useState('');
   const [books, setBooks] = useState([]);
   const [selectedBookId, setSelectedBookId] = useState(null);
   const [bookForm, setBookForm] = useState(initialBookForm);
@@ -28,11 +30,13 @@ function ManageBooksPage() {
   const [messageType, setMessageType] = useState('success');
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadBooks = async () => {
+  const loadBooks = async (searchKeyword = keyword) => {
     setIsLoading(true);
-    const result = await getAdminBooks();
+    const result = await getAdminBooks(searchKeyword);
     setBooks(result.data);
-    setSelectedBookId(null);
+    setSelectedBookId((currentId) =>
+      result.data.some((book) => book.book_id === currentId) ? currentId : null,
+    );
     setIsLoading(false);
   };
 
@@ -45,7 +49,7 @@ function ManageBooksPage() {
     }
 
     setCurrentAdmin(JSON.parse(storedAdmin));
-    loadBooks();
+    loadBooks('');
   }, [navigate]);
 
   const handleFormChange = (event) => {
@@ -61,6 +65,12 @@ function ManageBooksPage() {
   const borrowedCount = books.filter((book) => book.status === 'BORROWED').length;
   const reservedCount = books.filter((book) => book.status === 'RESERVED').length;
   const removedCount = books.filter((book) => book.status === 'REMOVED').length;
+
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    setMessage('');
+    await loadBooks(keyword);
+  };
 
   const handleAddBook = async (event) => {
     event.preventDefault();
@@ -103,6 +113,22 @@ function ManageBooksPage() {
     }
   };
 
+  const handleRestoreBook = async () => {
+    if (!selectedBookId) {
+      setMessageType('error');
+      setMessage('Please select a book first.');
+      return;
+    }
+
+    const result = await restoreLibraryBook(selectedBookId);
+    setMessageType(result.success ? 'success' : 'error');
+    setMessage(result.message);
+
+    if (result.success) {
+      await loadBooks();
+    }
+  };
+
   if (!currentAdmin) {
     return null;
   }
@@ -121,6 +147,17 @@ function ManageBooksPage() {
             {removedCount} removed
           </div>
         </div>
+
+        <form className="toolbar" onSubmit={handleSearch}>
+          <input
+            type="search"
+            aria-label="Search books"
+            placeholder="Search by keyword"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+          />
+          <AppButton type="submit">Search</AppButton>
+        </form>
 
         <form className="admin-form-grid" onSubmit={handleAddBook}>
           <div className="form-section-title">Add Book</div>
@@ -253,7 +290,7 @@ function ManageBooksPage() {
               {!isLoading && books.length === 0 && (
                 <tr>
                   <td colSpan="9">
-                    <div className="empty-state">No books are available in the mock catalog.</div>
+                    <div className="empty-state">No matching records found.</div>
                   </td>
                 </tr>
               )}
@@ -262,10 +299,11 @@ function ManageBooksPage() {
         </div>
 
         <div className="page-actions">
-          <AppButton variant="secondary" onClick={loadBooks}>
+          <AppButton variant="secondary" onClick={() => loadBooks(keyword)}>
             Refresh
           </AppButton>
           <AppButton onClick={handleRemoveBook}>Remove Selected Book</AppButton>
+          <AppButton onClick={handleRestoreBook}>Restore Selected Book</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/admin')}>
             Back
           </AppButton>

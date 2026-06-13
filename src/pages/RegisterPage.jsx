@@ -52,85 +52,125 @@ function RegisterPage() {
   };
 
   return (
-    <main className="app-shell">
-      <PageCard className="auth-card auth-card--register note-card">
-        {/* 纸张便签风格，后续可继续扩展注册逻辑 */}
-        <aside className="auth-scene note-scene" aria-hidden="true">
-          <div className="paper-stack">
-            <span>📝</span>
-          </div>
-          <div className="scene-icons">
-            <span>📚</span>
-            <span>🪴</span>
-          </div>
-          <p className="scene-caption">A small card for a new reader.</p>
-        </aside>
-
-        <div className="card-content auth-panel">
-          <p className="eyebrow">Student Registration</p>
-          <h1>Create Student Account</h1>
-          <p className="page-intro">Prepare a library card profile for the prototype.</p>
-
-          <form className="form-stack" onSubmit={handleRegister}>
-            <label>
-              Student No
-              <input
-                type="text"
-                name="student_no"
-                placeholder="Enter student number"
-                value={formData.student_no}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Name
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter name"
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Password
-              <input
-                type="password"
-                name="password"
-                placeholder="Create password"
-                value={formData.password}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Role Level
-              <select name="role_level" value={formData.role_level} onChange={handleInputChange}>
-                <option value="NORMAL">NORMAL</option>
-                <option value="VIP">VIP</option>
-              </select>
-            </label>
-
-            {message && (
-              <p
-                className={
-                  messageType === 'success'
-                    ? 'form-message form-message--success'
-                    : 'form-message form-message--error'
-                }
-              >
-                {message}
-              </p>
-            )}
-
-            <div className="button-row">
-              <AppButton type="submit">Register</AppButton>
-              <AppButton variant="secondary" onClick={() => navigate('/login')}>
-                Back to Login
-              </AppButton>
+    <main className="portal-shell">
+      <section className="portal-frame">
+        <header className="portal-header">
+          <div className="portal-brand">
+            <span className="brand-icon" aria-hidden="true" />
+            <div>
+              <strong>University Library Portal</strong>
+              <span>Library Management System</span>
             </div>
-          </form>
+          </div>
+          <p>Frontend mock demo · Service-ready architecture</p>
+        </header>
+
+        <div className="portal-layout portal-layout--professional">
+          <section className="portal-hero portal-hero--system">
+            <div className="portal-hero-content">
+              <p className="eyebrow">Student Library Access</p>
+              <h1>Create your library account</h1>
+              <p>
+                Register a student profile to search the university catalog, manage borrowing,
+                and keep track of reservations and due dates.
+              </p>
+            </div>
+
+            <div className="system-status-panel">
+              <div className="status-row">
+                <span>Account Type</span>
+                <strong>Student Reader</strong>
+              </div>
+              <div className="status-row">
+                <span>Membership</span>
+                <strong>Normal or VIP</strong>
+              </div>
+              <div className="status-row">
+                <span>Access</span>
+                <strong>Library services portal</strong>
+              </div>
+            </div>
+
+            <div className="module-list">
+              <p>Student account features</p>
+              <ul>
+                <li>Search and review the university library catalog</li>
+                <li>Track borrowed books, history, and due reminders</li>
+                <li>Manage personal book reservations</li>
+              </ul>
+            </div>
+          </section>
+
+          <PageCard className="portal-login-card">
+            <div className="card-content auth-panel">
+              <p className="eyebrow">Student Registration</p>
+              <h2>Create Student Account</h2>
+              <p className="page-intro">Set up your university library portal access.</p>
+
+              <form className="form-stack" onSubmit={handleRegister}>
+                <label>
+                  Student No
+                  <input
+                    type="text"
+                    name="student_no"
+                    placeholder="Enter student number"
+                    value={formData.student_no}
+                    onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Name
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Create password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                  />
+                </label>
+                <label>
+                  Role Level
+                  <select name="role_level" value={formData.role_level} onChange={handleInputChange}>
+                    <option value="NORMAL">NORMAL</option>
+                    <option value="VIP">VIP</option>
+                  </select>
+                </label>
+
+                {message && (
+                  <p
+                    className={
+                      messageType === 'success'
+                        ? 'form-message form-message--success'
+                        : 'form-message form-message--error'
+                    }
+                  >
+                    {message}
+                  </p>
+                )}
+
+                <div className="button-row">
+                  <AppButton type="submit">Register</AppButton>
+                  <AppButton variant="secondary" onClick={() => navigate('/login')}>
+                    Back to Login
+                  </AppButton>
+                </div>
+              </form>
+
+              <p className="ui-version">UI version: warm-library-v2</p>
+            </div>
+          </PageCard>
         </div>
-      </PageCard>
+      </section>
     </main>
   );
 }
