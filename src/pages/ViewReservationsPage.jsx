@@ -46,8 +46,8 @@ function ViewReservationsPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card admin-compact-card">
+        <div className="section-header admin-compact-header">
           <div>
             <p className="eyebrow">Admin Library</p>
             <h1>View Reservations</h1>
@@ -59,7 +59,7 @@ function ViewReservationsPage() {
           </div>
         </div>
 
-        <form className="toolbar" onSubmit={handleSearch}>
+        <form className="toolbar admin-compact-toolbar" onSubmit={handleSearch}>
           <input
             type="search"
             aria-label="Search reservations"
@@ -84,8 +84,8 @@ function ViewReservationsPage() {
 
         {isLoading && <p className="loading-text">Loading...</p>}
 
-        <div className="table-wrap">
-          <table className="data-table">
+        <div className="table-wrap admin-compact-table-wrap">
+          <table className="data-table admin-compact-table">
             <thead>
               <tr>
                 <th>Reservation ID</th>
@@ -124,7 +124,7 @@ function ViewReservationsPage() {
           </table>
         </div>
 
-        <div className="page-actions">
+        <div className="page-actions admin-compact-actions">
           <AppButton onClick={() => loadReservations(keyword)}>Refresh</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/admin')}>
             Back
