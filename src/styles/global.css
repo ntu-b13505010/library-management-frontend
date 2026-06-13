@@ -1666,6 +1666,290 @@ select {
   background: linear-gradient(180deg, #795337, #654027);
 }
 
+/* 後台功能頁：壓縮垂直空間並保留清楚的資料層級 */
+.admin-compact-card {
+  width: min(1240px, 100%);
+  padding: 22px 26px;
+}
+
+.admin-compact-header {
+  gap: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+
+.admin-compact-header .eyebrow {
+  margin-bottom: 3px;
+}
+
+.admin-compact-header h1 {
+  margin-bottom: 4px;
+  font-size: clamp(1.7rem, 2.6vw, 2.15rem);
+  line-height: 1.1;
+}
+
+.admin-compact-header .page-intro {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.admin-compact-header .mini-summary {
+  padding: 7px 11px;
+  font-size: 0.76rem;
+  line-height: 1.25;
+}
+
+.admin-compact-toolbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 9px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 11px;
+}
+
+.admin-compact-toolbar input,
+.admin-compact-toolbar select {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding-block: 7px;
+}
+
+.admin-compact-toolbar .app-button {
+  min-height: 38px;
+  padding: 7px 18px;
+}
+
+.admin-compact-card > .form-message,
+.admin-compact-card > .loading-text {
+  margin: 8px 0;
+}
+
+.admin-compact-table-wrap {
+  max-height: min(43vh, 390px);
+  overflow: auto;
+  border: 1px solid rgba(112, 74, 47, 0.18);
+  border-radius: 8px;
+}
+
+.admin-compact-table {
+  min-width: 760px;
+  font-size: 0.8rem;
+}
+
+.admin-wide-table {
+  min-width: 1120px;
+}
+
+.admin-compact-table th,
+.admin-compact-table td {
+  height: 36px;
+  padding: 6px 9px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.admin-compact-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.admin-compact-table .status-pill {
+  min-height: 22px;
+  padding: 2px 7px;
+  font-size: 0.68rem;
+}
+
+.admin-compact-table .empty-state {
+  padding: 18px 12px;
+}
+
+.admin-compact-actions {
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.admin-compact-actions .app-button {
+  min-height: 38px;
+  padding: 7px 14px;
+}
+
+.manage-books-form {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px 10px;
+  margin-bottom: 11px;
+  padding: 12px;
+  border-radius: 9px;
+}
+
+.manage-books-form .form-section-title {
+  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.manage-books-form label {
+  gap: 4px;
+  min-width: 0;
+  font-size: 0.75rem;
+}
+
+.manage-books-form input {
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 9px;
+  font-size: 0.81rem;
+}
+
+.manage-books-form .admin-form-actions {
+  align-items: end;
+}
+
+.manage-books-form .admin-form-actions .app-button {
+  min-height: 36px;
+  padding: 7px 14px;
+}
+
+.manage-books-table-wrap {
+  max-height: min(31vh, 275px);
+}
+
+.admin-statistics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-statistics-grid .stat-card {
+  min-height: 76px;
+  padding: 10px 12px;
+}
+
+.admin-statistics-grid .stat-value {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.admin-statistics-grid .stat-label {
+  margin-top: 7px;
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.admin-ranking-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-ranking-panel {
+  padding: 13px;
+}
+
+.admin-ranking-panel .panel-title-row {
+  margin-bottom: 7px;
+}
+
+.admin-ranking-panel .panel-title-row h2 {
+  font-size: 1rem;
+}
+
+.admin-ranking-table-wrap {
+  max-height: 245px;
+  margin-top: 0;
+  overflow: auto;
+}
+
+.admin-ranking-table-wrap .data-table {
+  min-width: 0;
+  font-size: 0.76rem;
+}
+
+.admin-ranking-table-wrap .data-table th,
+.admin-ranking-table-wrap .data-table td {
+  height: 34px;
+  padding: 5px 8px;
+  line-height: 1.2;
+}
+
+.admin-ranking-table-wrap .data-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .admin-compact-card {
+    padding: 19px 20px;
+  }
+
+  .manage-books-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-ranking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-compact-table-wrap,
+  .manage-books-table-wrap {
+    max-height: 46vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-compact-card {
+    padding: 16px;
+  }
+
+  .admin-compact-header {
+    gap: 9px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .admin-compact-header h1 {
+    font-size: 1.55rem;
+  }
+
+  .admin-compact-header .mini-summary {
+    width: 100%;
+  }
+
+  .admin-compact-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-compact-toolbar .app-button {
+    width: 100%;
+  }
+
+  .manage-books-form {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 11px;
+  }
+
+  .admin-statistics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-compact-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-compact-actions .app-button {
+    width: 100%;
+  }
+
+  .admin-compact-table-wrap,
+  .manage-books-table-wrap {
+    max-height: 52vh;
+  }
+}
+
 /* Search Books density: keep catalog actions close to the visible laptop viewport. */
 .search-books-card {
   width: min(1180px, 100%);
