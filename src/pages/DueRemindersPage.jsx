@@ -36,8 +36,8 @@ function DueRemindersPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card feature-compact-card">
+        <div className="section-header feature-compact-header">
           <div>
             <p className="eyebrow">Student Library</p>
             <h1>Due Reminders</h1>
@@ -48,8 +48,8 @@ function DueRemindersPage() {
 
         {isLoading && <p className="loading-text">Loading...</p>}
 
-        <div className="table-wrap">
-          <table className="data-table">
+        <div className="table-wrap feature-compact-table-wrap">
+          <table className="data-table feature-compact-table feature-wide-table">
             <thead>
               <tr>
                 <th>Record ID</th>
@@ -90,7 +90,7 @@ function DueRemindersPage() {
           </table>
         </div>
 
-        <div className="page-actions">
+        <div className="page-actions feature-compact-actions">
           <AppButton onClick={() => loadRecords(currentUser.user_id)}>Refresh</AppButton>
           <AppButton variant="secondary" onClick={() => navigate('/student')}>
             Back
