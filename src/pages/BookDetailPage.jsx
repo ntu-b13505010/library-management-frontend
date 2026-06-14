@@ -74,8 +74,8 @@ function BookDetailPage() {
 
   return (
     <main className="app-shell workspace-shell">
-      <PageCard className="feature-card">
-        <div className="section-header">
+      <PageCard className="feature-card feature-compact-card feature-detail-card">
+        <div className="section-header feature-compact-header">
           <div>
             <p className="eyebrow">Student Library</p>
             <h1>Book Detail</h1>
@@ -105,7 +105,7 @@ function BookDetailPage() {
         {isLoading && <p className="loading-text">Loading...</p>}
 
         {book ? (
-          <div className="detail-grid">
+          <div className="detail-grid feature-compact-detail-grid">
             <div className="detail-panel detail-panel--wide">
               <span>Title</span>
               <strong>{book.title}</strong>
@@ -151,7 +151,7 @@ function BookDetailPage() {
           !isLoading && <div className="empty-state">Book detail is not available.</div>
         )}
 
-        <div className="page-actions">
+        <div className="page-actions feature-compact-actions">
           <AppButton onClick={handleBorrow} disabled={!book || book.status !== 'AVAILABLE'}>
             Borrow
           </AppButton>
