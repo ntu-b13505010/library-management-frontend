@@ -178,7 +178,6 @@ function SearchBooksPage() {
                 <th>Title</th>
                 <th>Authors</th>
                 <th>Subjects</th>
-                <th>Publisher</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -193,7 +192,6 @@ function SearchBooksPage() {
                   <td>{book.title}</td>
                   <td>{book.authors}</td>
                   <td>{book.subjects}</td>
-                  <td>{book.publisher}</td>
                   <td>
                     <span className={`status-pill status-pill--${book.status.toLowerCase()}`}>
                       {book.status}
@@ -203,7 +201,7 @@ function SearchBooksPage() {
               ))}
               {!isLoading && books.length === 0 && (
                 <tr>
-                  <td colSpan="6">
+                  <td colSpan="5">
                     <div className="empty-state">
                       No books found. Try a different title, author, subject, publisher, or ISBN.
                     </div>
