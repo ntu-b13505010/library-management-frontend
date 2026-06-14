@@ -1665,6 +1665,58 @@ select {
 .app-button--primary {
   background: linear-gradient(180deg, #795337, #654027);
 }
+/* Sidebar navigation density: shared by student and admin dashboards. */
+.app-sidebar .side-menu,
+.admin-sidebar .side-menu {
+  width: 100%;
+  max-width: 100%;
+  gap: 5px;
+}
+
+.app-sidebar .side-menu__item,
+.admin-sidebar .side-menu__item {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  align-items: center;
+  padding: 6px 10px;
+  overflow: hidden;
+  color: #4a2d1c;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .app-sidebar .side-menu,
+  .admin-sidebar .side-menu {
+    gap: 6px;
+  }
+
+  .app-sidebar .side-menu__item,
+  .admin-sidebar .side-menu__item {
+    min-height: 38px;
+    padding: 7px 9px;
+    font-size: 0.79rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-sidebar .side-menu__item,
+  .admin-sidebar .side-menu__item {
+    justify-content: flex-start;
+    min-height: 36px;
+    overflow: visible;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+    white-space: normal;
+  }
+}
 
 /* 後台功能頁：壓縮垂直空間並保留清楚的資料層級 */
 .admin-compact-card {
